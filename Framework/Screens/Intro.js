@@ -9,8 +9,8 @@ export function Intro() {
             <ImageBackground source={require("../../assets/intro.jpg")} style={styles.bg}>
                 <View style={styles.overlay}>
                     <View style={{ marginTop: 40 }}>
-                        <Text style={{ fontFamily: Theme.fonts.text200, color: "#ffffff", fontSize: 25, textAlign: "center" }}>Welcome to <Text style={{ fontFamily: Theme.fonts.brand, }}>Big Paddi.</Text></Text>
-                        <Text style={{ fontFamily: Theme.fonts.text200, color: "#ffffff", fontSize: 15, textAlign: "center" }}>Real estate money in your pocket!</Text>
+                        <Text style={{ fontFamily: Theme.fonts.text300, color: "#ffffff", fontSize: 25, textAlign: "center" }}>Welcome to <Text style={{ fontFamily: Theme.fonts.brand, }}>Big Paddi.</Text></Text>
+                        <Text style={{ fontFamily: Theme.fonts.text300, color: "#ffffff", fontSize: 15, textAlign: "center" }}>Real estate money in your pocket!</Text>
                     </View>
                     <AppBotton>Get Started</AppBotton>
                 </View>
