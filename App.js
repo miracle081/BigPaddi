@@ -11,6 +11,9 @@ import * as Font from 'expo-font';
 // import { Preloader } from "./Framework/Components/Preloader";
 // import { AppProvider } from "./global/globalVariables";
 import { RootSiblingParent } from "react-native-root-siblings";
+import { Login } from "./Framework/Screens/Login";
+import { StackNavigator } from "./Framework/Navigation/StackNavigator";
+import { NavigationContainer } from "@react-navigation/native";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -51,7 +54,9 @@ export default function App() {
 
   return (
     <RootSiblingParent>
-      <Intro />
+      <NavigationContainer>
+        <StackNavigator />
+      </NavigationContainer>
     </RootSiblingParent>
   );
 }

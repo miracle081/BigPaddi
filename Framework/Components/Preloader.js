@@ -16,7 +16,6 @@ export function Preloader() {
                             autoPlay
                             loop
                             speed={1.5}
-
                         />
                     </View>
                     : null
