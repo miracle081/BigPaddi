@@ -1,139 +1,71 @@
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { Theme } from '../Components/Theme'
-import { TextInput } from 'react-native-paper'
+import { faUserCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { View, Text, ImageBackground, StyleSheet, TouchableOpacity } from "react-native";
+import { Button, TextInput } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { AppBotton } from "../Components/AppBotton";
 
-export function Login() {
+export function Login({ navigation }) {
     return (
-        <ImageBackground source={require("../../assets/Intro2.jpg")} style={styles.bg}>
-            <View>
-                <View style={{ alignItems: 'center', marginTop: 70 }}>
-                    <Text style={{ fontSize: 30, fontWeight: 'bold', marginLeft: 20, color: '#b39a0e' }}>LOG IN TO YOUR ACCOUNT</Text>
+        <ImageBackground source={require("../../assets/Logimage2.jpg")} style={{ height: '100%', width: '100%' }}>
+            <SafeAreaView style={styles.overlay}>
+
+
+                <View style={{ padding: 30, marginTop: 50, alignSelf: 'center', backgroundColor: "#6E3DEB", borderRadius: 50 }}>
+                    <FontAwesomeIcon icon={faUserCheck} size={50} color="white" />
                 </View>
 
-                <View>
-                    <View style={{ marginTop: 20 }}>
-                        <TextInput
-                            placeholder="Enter Email or Phone Number"
-                            placeholderTextColor='grey'
-                            borderWidth="2"
-                            borderColor='#b39a0e'
-                        />
-                    </View>
+                <View style={{ margin: 20 }}>
+                    <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30, color: 'white' }}>Login to your Account</Text>
+                </View>
 
-                    <View style={{ marginTop: 3 }}>
+                <View style={{ marginTop: 50 }}>
+                    <Text style={{ fontSize: 20, color: 'white' }}>Login</Text>
+
+                    <View>
+                        <TextInput
+                            placeholder="Enter Your Email or Phone Number"
+                            style={{ borderRadius: 30 }} />
+                    </View>
+                </View>
+
+                <View style={{ marginTop: 10 }}>
+                    <Text style={{ fontSize: 20, color: 'white' }}>Password</Text>
+
+                    <View>
                         <TextInput
                             placeholder="Enter Password"
-                            placeholderTextColor='grey'
-                            borderWidth="2"
-                            borderColor='#b39a0e'
-                        />
+                            style={{ borderRadius: 30 }} />
                     </View>
-
-                </View>
-            </View>
-
-            <TouchableOpacity>
-                <View style={styles.buttonContainer}>
-                    <Text style={styles.buttonText}>LOG IN</Text>
-                </View>
-            </TouchableOpacity>
-
-
-            <View style={{ backgroundColor: "#292828c5", padding: 30, borderRadius: 50, height: 90, width: 90, alignItems: 'center', marginTop: 50, marginLeft: 160 }}>
-                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#b39a0e' }}>OR</Text>
-            </View>
-
-            <View style={{ alignItems: 'center', marginTop: 40 }}>
-                <Text style={{ fontSize: 30, fontWeight: 'bold', marginLeft: 20, color: '#b39a0e' }}>LOG IN TO YOUR ACCOUNT</Text>
-            </View>
-
-            <View style={{ flexDirection: 'row', }}>
-                <View style={{ marginTop: 20 }}>
-                    <TextInput
-                        placeholder="Enter Name"
-                        placeholderTextColor='grey'
-                        borderWidth="2"
-                        borderColor='#b39a0e'
-                        width={200}
-
-                    />
                 </View>
 
-                <View style={{ marginTop: 20, marginLeft: 2 }}>
-                    <TextInput
-                        placeholder="Enter Surname"
-                        placeholderTextColor='grey'
-                        borderWidth="2"
-                        borderColor='#b39a0e'
-                        width={212}
-
-                    />
-                </View>
-            </View>
-
-            <View style={{ marginTop: 3 }}>
-                <TextInput
-                    placeholder="Enter Email or Phone Number"
-                    placeholderTextColor='grey'
-                    borderWidth="2"
-                    borderColor='#b39a0e'
-
-
-                />
-            </View>
-
-            <View style={{ flexDirection: 'row', }}>
-                <View style={{ marginTop: 3 }}>
-                    <TextInput
-                        placeholder="Enter Password"
-                        placeholderTextColor='grey'
-                        borderWidth="2"
-                        borderColor='#b39a0e'
-                        width={200}
-
-                    />
+                <View style={{ paddingVertical: 50 }}>
+                    <AppBotton onPress={() => navigation.navigate("Home")}>Login</AppBotton>
                 </View>
 
-                <View style={{ marginTop: 3, marginLeft: 2 }}>
-                    <TextInput
-                        placeholder="Confirm Password"
-                        placeholderTextColor='grey'
-                        borderWidth="2"
-                        borderColor='#b39a0e'
-                        width={212} />
-                </View>
-            </View>
+                <View style={{ flexDirection: 'row', alignSelf: 'center', }}>
+                    <Text style={{ fontSize: 20, color: 'white' }}>Don't have an Account?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+                        <Text style={{ fontSize: 20, color: 'red' }}> Signup</Text>
+                    </TouchableOpacity>
 
-            <TouchableOpacity>
-                <View style={styles.buttonContainer}>
-                    <Text style={styles.buttonText}>SIGN UP</Text>
                 </View>
-            </TouchableOpacity>
 
+            </SafeAreaView>
         </ImageBackground>
+
+
+
     )
 }
 
 const styles = StyleSheet.create({
-    bg: {
-        // flex: 1,
-        width: "100%",
-        height: "100%",
-    },
-    buttonContainer: {
-        backgroundColor: "#292828c5",
-        padding: 15,
-        borderRadius: 50,
-        height: 50,
-        width: 150,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
-        marginLeft: 140
-    },
-    buttonText: {
-        color: '#b39a0e',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
+    overlay: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        // backgroundColor: Theme.colors.primary + 80,
+        backgroundColor: "#00000081",
+        padding: 20,
+        paddingVertical: 100
+    }
 })

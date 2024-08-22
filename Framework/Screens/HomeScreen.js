@@ -75,7 +75,7 @@ const Header = () => {
         >
             <View
                 style={{
-                    paddingHorizontal: Theme.spacing.small,
+                    paddingHorizontal: 8,
                     flexDirection: "row",
                     justifyContent: "space-between",
                 }}
@@ -263,7 +263,7 @@ const FeaturedCollection = (products) => {
     );
 };
 
-const Index = () => {
+const Home = () => {
     const [images, setImages] = useState();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -285,7 +285,6 @@ const Index = () => {
             const res = await fetch("https://fakestoreapi.com/products");
             console.log("requesting");
             const data = await res.json();
-            console.log("data", data);
             // setProducts([...data]);
             setLoading(false);
         } catch (error) {
@@ -303,7 +302,7 @@ const Index = () => {
     }, [products]);
 
     return (
-        <SafeAreaView style={{ backgroundColor: Theme.colors.background }}>
+        <SafeAreaView style={{ backgroundColor: "#F6F6F6" }}>
             <View style={{ paddingBottom: 4 }}>
                 <Header />
                 <Collections />
@@ -314,7 +313,7 @@ const Index = () => {
                 </View>
                 <View
                     style={{
-                        padding: Theme.spacing.small,
+                        padding: 8,
                         gap: 12,
                         // marginBottom: 500,
                         marginBottom: 10

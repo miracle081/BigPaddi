@@ -7,13 +7,11 @@ import {
 } from "@expo-google-fonts/montserrat"
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
-// import { StackNavigator } from "./Framework/Navigators/StackNavigator";
 // import { Preloader } from "./Framework/Components/Preloader";
 // import { AppProvider } from "./global/globalVariables";
 import { RootSiblingParent } from "react-native-root-siblings";
-import { Login } from "./Framework/Screens/Login";
-// import { StackNavigator } from "./Framework/Navigation/StackNavigator";
-// import { NavigationContainer } from "@react-navigation/native";
+import { StackNavigator } from "./Framework/Navigation/StackNavigator";
+import { NavigationContainer } from "@react-navigation/native";
 import { Profile } from "./Framework/Screens/Profile";
 
 export default function App() {
@@ -55,10 +53,10 @@ export default function App() {
 
   return (
     <RootSiblingParent>
-      {/* <NavigationContainer>
+      <NavigationContainer>
         <StackNavigator />
-      </NavigationContainer> */}
-      <Profile />
+      </NavigationContainer>
+      {/* <Profile /> */}
     </RootSiblingParent>
   );
 }

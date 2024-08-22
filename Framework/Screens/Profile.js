@@ -5,16 +5,17 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { Theme } from '../Components/Theme'
 
-export function Profile() {
+export function Profile({ navigation, route }) {
     const [visibility, setvisibility] = useState(false)
+    const user = route.params;
 
     return (
         <SafeAreaView style={{ backgroundColor: "white" }}>
             <View style={{ padding: 20, backgroundColor: "white" }}>
-                <Text>Profile</Text>
+                <Text style={{}}>Profile</Text>
+                <Text style={{ fontSize: 30, textAlign: 'center', margin: 5 }}>{user.fname} {user.lname}</Text>
+                <Text style={{ fontSize: 16, textAlign: 'center', marginBottom: 20 }}>{user.email}</Text>
                 <AppBotton onPress={() => setvisibility(true)}>Open Modal</AppBotton>
-
-
 
 
                 <Modal
