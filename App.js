@@ -13,6 +13,7 @@ import { RootSiblingParent } from "react-native-root-siblings";
 import { StackNavigator } from "./Framework/Navigation/StackNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { Profile } from "./Framework/Screens/Profile";
+import { AppProvider } from "./Framework/Components/GlobalVariables";
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -53,10 +54,11 @@ export default function App() {
 
   return (
     <RootSiblingParent>
-      <NavigationContainer>
-        <StackNavigator />
-      </NavigationContainer>
-      {/* <Profile /> */}
+      <AppProvider>
+        <NavigationContainer>
+          <StackNavigator />
+        </NavigationContainer>
+      </AppProvider>
     </RootSiblingParent>
   );
 }

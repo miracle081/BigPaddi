@@ -4,8 +4,12 @@ import { View, Text, ImageBackground, StyleSheet, TouchableOpacity } from "react
 import { Button, TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppBotton } from "../Components/AppBotton";
+import { AppContext } from "../Components/GlobalVariables";
+import { useContext } from "react";
 
 export function Login({ navigation }) {
+    const { setUserInfo } = useContext(AppContext)
+
     return (
         <ImageBackground source={require("../../assets/Logimage2.jpg")} style={{ height: '100%', width: '100%' }}>
             <SafeAreaView style={styles.overlay}>
@@ -40,7 +44,7 @@ export function Login({ navigation }) {
                 </View>
 
                 <View style={{ paddingVertical: 50 }}>
-                    <AppBotton onPress={() => navigation.navigate("Home")}>Login</AppBotton>
+                    <AppBotton onPress={() => setUserInfo({ fname: "Ben" })}>Login</AppBotton>
                 </View>
 
                 <View style={{ flexDirection: 'row', alignSelf: 'center', }}>

@@ -7,6 +7,8 @@ import { AppBotton } from "../Components/AppBotton";
 import { faUserEdit } from "@fortawesome/free-solid-svg-icons/faUserEdit";
 import { Formik } from "formik";
 import * as yup from "yup"
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { authentication } from "../Firebase/settings";
 
 const validation = yup.object({
     fname: yup.string().min(3).max(15).required(),
@@ -35,7 +37,12 @@ export function Signup({ navigation }) {
                         initialValues={{ fname: "", lname: "", phone: "", email: "", password: "" }}
                         onSubmit={(values) => {
                             // console.log(values);
-                            navigation.navigate("Profile", values)
+                            createUserWithEmailAndPassword(authentication, values.email, values.password)
+                                .then(data => {
+                                    const { uid } = data.user
+                                    navigation.replace("HomeScreen")
+                                })
+                                .catch(e => console.log(e))
                         }}
                         validationSchema={validation}
                     >
