@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View, } from 'react-native';
 import AnimatedLottieView from 'lottie-react-native';
-import { AppContext } from '../../global/globalVariables';
+import { AppContext } from './GlobalVariables';
 
 export function Preloader() {
     const { preloader } = useContext(AppContext);
@@ -15,7 +15,7 @@ export function Preloader() {
                             source={require('../../assets/loader.json')}
                             autoPlay
                             loop
-                            speed={1.5}
+                            speed={1}
                         />
                     </View>
                     : null

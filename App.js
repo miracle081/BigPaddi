@@ -7,7 +7,7 @@ import {
 } from "@expo-google-fonts/montserrat"
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
-// import { Preloader } from "./Framework/Components/Preloader";
+import { Preloader } from "./Framework/Components/Preloader";
 // import { AppProvider } from "./global/globalVariables";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { StackNavigator } from "./Framework/Navigation/StackNavigator";
@@ -57,6 +57,7 @@ export default function App() {
       <AppProvider>
         <NavigationContainer>
           <StackNavigator />
+          <Preloader />
         </NavigationContainer>
       </AppProvider>
     </RootSiblingParent>
