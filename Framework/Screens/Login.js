@@ -1,14 +1,25 @@
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { View, Text, ImageBackground, StyleSheet, TouchableOpacity } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { View, Text, ImageBackground, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppBotton } from "../Components/AppBotton";
+import { faUserEdit } from "@fortawesome/free-solid-svg-icons/faUserEdit";
+import { Formik } from "formik";
+import * as yup from "yup"
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { authentication } from "../Firebase/settings";
 import { AppContext } from "../Components/GlobalVariables";
 import { useContext } from "react";
 
+const validation = yup.object({
+    email: yup.string().email().min(7).required(),
+    password: yup.string().min(8).max(30).lowercase().uppercase().required(),
+})
+
+
 export function Login({ navigation }) {
-    const { setUserInfo } = useContext(AppContext)
+    const { setUserInfo, setPreloader } = useContext(AppContext)
 
     return (
         <ImageBackground source={require("../../assets/Logimage2.jpg")} style={{ height: '100%', width: '100%' }}>
@@ -23,29 +34,61 @@ export function Login({ navigation }) {
                     <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30, color: 'white' }}>Login to your Account</Text>
                 </View>
 
-                <View style={{ marginTop: 50 }}>
-                    <Text style={{ fontSize: 20, color: 'white' }}>Login</Text>
+                <Formik
+                    initialValues={{ email: "", password: "" }}
+                    onSubmit={(values) => {
+                        // console.log(values);
+                        setPreloader(true)
+                        signInWithEmailAndPassword(authentication, values.email, values.password)
+                            .then(data => {
+                                const { uid } = data.user
+                                setPreloader(false)
+                                navigation.replace("HomeScreen")
+                            })
+                            .catch(e => {
+                                setPreloader(false)
+                                console.log(e)
+                            })
+                    }}
+                    validationSchema={validation}
+                >
+                    {({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
 
-                    <View>
-                        <TextInput
-                            placeholder="Enter Your Email or Phone Number"
-                            style={{ borderRadius: 30 }} />
-                    </View>
-                </View>
+                        return (
+                            <View style={{}}>
+                                <View style={{ margin: 10, marginTop: 5 }}>
+                                    <Text style={{ fontSize: 20, color: 'white' }}>Email</Text>
+                                    <TextInput
+                                        placeholder="Enter Email"
+                                        style={{ borderRadius: 30 }}
+                                        value={values.email}
+                                        onChangeText={handleChange('email')}
+                                        autoCapitalize="none"
+                                        autoCorrect={false}
+                                    />
+                                    <Text style={{ fontSize: 14, color: '#f95252', display: errors.email ? "flex" : "none" }}>{errors.email}</Text>
+                                </View>
 
-                <View style={{ marginTop: 10 }}>
-                    <Text style={{ fontSize: 20, color: 'white' }}>Password</Text>
-
-                    <View>
-                        <TextInput
-                            placeholder="Enter Password"
-                            style={{ borderRadius: 30 }} />
-                    </View>
-                </View>
-
-                <View style={{ paddingVertical: 50 }}>
-                    <AppBotton onPress={() => setUserInfo({ fname: "Ben" })}>Login</AppBotton>
-                </View>
+                                <View style={{ margin: 10, marginTop: 5 }}>
+                                    <Text style={{ fontSize: 20, color: 'white' }}>Password</Text>
+                                    <TextInput
+                                        placeholder="Enter Password"
+                                        style={{ borderRadius: 30 }}
+                                        value={values.password}
+                                        onChangeText={handleChange('password')}
+                                        autoCapitalize="none"
+                                        autoCorrect={false}
+                                        secureTextEntry={true}
+                                    />
+                                    <Text style={{ fontSize: 14, color: '#f95252', display: errors.password ? "flex" : "none" }}>{errors.password}</Text>
+                                </View>
+                                <View style={{ marginTop: 30 }}>
+                                    <AppBotton onPress={() => handleSubmit()}>Log In</AppBotton>
+                                </View>
+                            </View>
+                        )
+                    }}
+                </Formik>
 
                 <View style={{ flexDirection: 'row', alignSelf: 'center', }}>
                     <Text style={{ fontSize: 20, color: 'white' }}>Don't have an Account?</Text>

@@ -12,8 +12,10 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Carousel from "react-native-reanimated-carousel";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { Theme } from "../Components/Theme";
+import { Profile } from "./Profile";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons } from "@expo/vector-icons";
 const { height, width } = Dimensions.get("window");
 
 
@@ -93,7 +95,7 @@ const images = [
     },
 ];
 
-const Home = () => {
+export const Home = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [selected, setSelected] = useState(0);
@@ -446,7 +448,7 @@ const Home = () => {
     );
 };
 
-export default Home;
+
 
 const styles = StyleSheet.create({
     container: {
@@ -463,3 +465,33 @@ const styles = StyleSheet.create({
         backgroundColor: "#f6f6f6",
     },
 });
+
+const Tab = createBottomTabNavigator();
+export function HomeScreen() {
+    return (
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color }) => {
+                    let iconName;
+                    let size;
+                    if (route.name === 'Home') {
+                        size = focused ? 35 : 23
+                        iconName = focused ? 'home' : 'home-outline';
+                    }
+                    else if (route.name === 'Profile') {
+                        size = focused ? 35 : 23
+                        iconName = focused ? 'person' : 'person-outline';
+                    }
+
+                    return <Ionicons name={iconName} size={size} color={color} />;
+                },
+                tabBarActiveTintColor: Theme.colors.primary,
+                tabBarInactiveTintColor: Theme.colors.gray,
+                headerShown: false,
+            })}
+        >
+            <Tab.Screen name='Home' component={Home} />
+            <Tab.Screen name='Profile' component={Profile} />
+        </Tab.Navigator>
+    )
+}
