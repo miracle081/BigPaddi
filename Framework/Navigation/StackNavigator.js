@@ -4,6 +4,7 @@ import { Intro } from '../Screens/Intro';
 import { Login } from '../Screens/Login';
 import { Profile } from '../Screens/Profile';
 import { Signup } from '../Screens/Signup';
+import { PostProduct } from '../Screens/PostProduct';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ export function StackNavigator() {
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
             <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+            <Stack.Screen name="PostProduct" component={PostProduct} options={{ headerShown: false }} />
         </Stack.Navigator>
     );
 }

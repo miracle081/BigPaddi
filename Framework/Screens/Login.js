@@ -19,7 +19,7 @@ const validation = yup.object({
 
 
 export function Login({ navigation }) {
-    const { setUserInfo, setPreloader } = useContext(AppContext)
+    const { setUserInfo, setPreloader, setUserUID } = useContext(AppContext)
 
     return (
         <ImageBackground source={require("../../assets/Logimage2.jpg")} style={{ height: '100%', width: '100%' }}>
@@ -35,13 +35,14 @@ export function Login({ navigation }) {
                 </View>
 
                 <Formik
-                    initialValues={{ email: "", password: "" }}
+                    initialValues={{ email: "john@gmail.com", password: "password" }}
                     onSubmit={(values) => {
                         // console.log(values);
                         setPreloader(true)
                         signInWithEmailAndPassword(authentication, values.email, values.password)
                             .then(data => {
                                 const { uid } = data.user
+                                setUserUID(uid)
                                 setPreloader(false)
                                 navigation.replace("HomeScreen")
                             })

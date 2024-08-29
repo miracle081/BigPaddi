@@ -22,7 +22,7 @@ const validation = yup.object({
 })
 
 export function Signup({ navigation }) {
-    const { setUserInfo, setPreloader } = useContext(AppContext)
+    const { setUserInfo, setPreloader, setUserUID } = useContext(AppContext)
 
     return (
         <ImageBackground source={require("../../assets/Logimage2.jpg")} style={{ height: '100%', width: '100%' }}>
@@ -45,6 +45,7 @@ export function Signup({ navigation }) {
                             createUserWithEmailAndPassword(authentication, values.email, values.password)
                                 .then(data => {
                                     const { uid } = data.user
+                                    setUserUID(uid)
                                     setDoc(doc(db, "users", uid), {
                                         firstname: values.fname,
                                         lastname: values.lname,

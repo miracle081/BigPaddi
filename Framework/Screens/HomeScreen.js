@@ -10,12 +10,16 @@ import {
     StyleSheet,
     ScrollView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Carousel from "react-native-reanimated-carousel";
 import { Theme } from "../Components/Theme";
 import { Profile } from "./Profile";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { AppContext } from "../Components/GlobalVariables";
+import { PostProduct } from "./PostProduct";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../Firebase/settings";
 const { height, width } = Dimensions.get("window");
 
 
@@ -96,6 +100,7 @@ const images = [
 ];
 
 export const Home = () => {
+    const { setUserInfo, setPreloader, userUID } = useContext(AppContext)
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [selected, setSelected] = useState(0);
@@ -117,8 +122,25 @@ export const Home = () => {
         }
     };
 
+    function getUser() {
+        setPreloader(true)
+        getDoc(doc(db, "users", userUID))
+            .then(user => {
+                setPreloader(false);
+                setUserInfo(user.data())
+            })
+            .catch(e => {
+                console.log(e);
+                setPreloader(false);
+            })
+    }
+
+
     useEffect(() => {
         getData();
+        getUser();
+        // setPreloader(false)
+
     }, []);
 
     return (
@@ -468,6 +490,7 @@ const styles = StyleSheet.create({
 
 const Tab = createBottomTabNavigator();
 export function HomeScreen() {
+    const { userInfo } = useContext(AppContext)
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -480,10 +503,14 @@ export function HomeScreen() {
                     }
                     else if (route.name === 'Profile') {
                         size = focused ? 35 : 23
-                        iconName = focused ? 'person' : 'person-outline';
+                        iconName = focused ? 'account' : 'account-outline';
+                    }
+                    else if (route.name === 'PostProduct') {
+                        size = focused ? 35 : 23
+                        iconName = focused ? 'plus' : 'plus-box-outline';
                     }
 
-                    return <Ionicons name={iconName} size={size} color={color} />;
+                    return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
                 },
                 tabBarActiveTintColor: Theme.colors.primary,
                 tabBarInactiveTintColor: Theme.colors.gray,
@@ -491,7 +518,8 @@ export function HomeScreen() {
             })}
         >
             <Tab.Screen name='Home' component={Home} />
-            <Tab.Screen name='Profile' component={Profile} />
+            <Tab.Screen name='PostProduct' component={PostProduct} />
+            <Tab.Screen name='Profile' component={Profile} options={{ title: userInfo.firstname || "Profile" }} />
         </Tab.Navigator>
     )
 }
