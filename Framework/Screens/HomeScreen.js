@@ -18,7 +18,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { AppContext } from "../Components/GlobalVariables";
 import { PostProduct } from "./PostProduct";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../Firebase/settings";
 const { height, width } = Dimensions.get("window");
 
@@ -124,15 +124,20 @@ export const Home = () => {
 
     function getUser() {
         setPreloader(true)
-        getDoc(doc(db, "users", userUID))
-            .then(user => {
-                setPreloader(false);
-                setUserInfo(user.data())
-            })
-            .catch(e => {
-                console.log(e);
-                setPreloader(false);
-            })
+        // getDoc(doc(db, "users", userUID))
+        //     .then(user => {
+        //         setPreloader(false);
+        //         setUserInfo(user.data())
+        //     })
+        //     .catch(e => {
+        //         console.log(e);
+        //         setPreloader(false);
+        //     })
+        onSnapshot(doc(db, "users", userUID), (user) => {
+            setUserInfo(user.data())
+            setPreloader(false);
+
+        })
     }
 
 

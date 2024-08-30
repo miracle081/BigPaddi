@@ -1,6 +1,6 @@
 import { faUserCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { View, Text, ImageBackground, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { View, Text, ImageBackground, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
 import { TextInput } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppBotton } from "../Components/AppBotton";
@@ -12,6 +12,7 @@ import { authentication, db } from "../Firebase/settings";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { AppContext } from "../Components/GlobalVariables";
 import { useContext } from "react";
+import { errorMessage } from "../Components/formatErrorMessage";
 
 const validation = yup.object({
     fname: yup.string().min(3).max(15).required(),
@@ -63,6 +64,11 @@ export function Signup({ navigation }) {
                                         .catch(e => {
                                             setPreloader(false)
                                             console.log(e)
+                                            Alert.alert(
+                                                "Error!",
+                                                errorMessage(e.code),
+                                                [{ text: "Try Again" }]
+                                            )
                                         })
                                 })
                                 .catch(e => console.log(e))

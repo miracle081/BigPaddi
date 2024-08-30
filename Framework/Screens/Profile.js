@@ -50,8 +50,8 @@ export function Profile({ navigation }) {
                     </View>
                     <View style={{ marginBottom: 10 }}>
                         <Text style={{ fontSize: 15, fontFamily: Theme.fonts.text500, textAlign: "center" }}>Balance</Text>
-                        <Text style={{ fontSize: 14, }}>$<Text style={{ fontSize: 20 }}>{formatMoney(userInfo.balance || 0)}</Text></Text>
-                        <TouchableOpacity onPress={() => navigation.navigate("Fund")}
+                        <Text style={{ fontSize: 14, }}>$<Text style={{ fontSize: 20 }}>{formatMoney(userInfo.wallet || 0)}</Text></Text>
+                        <TouchableOpacity onPress={() => navigation.navigate("FundAccount")}
                             style={{ borderColor: Theme.colors.primary, borderWidth: 1, padding: 5, borderRadius: 100, width: 100, height: 30, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                             <FontAwesomeIcon icon={faPlusCircle} color={Theme.colors.primary} />
                             <Text style={{ fontSize: 13, alignItems: 'center', fontWeight: 'bold', marginLeft: 5, color: Theme.colors.primary }}>Fund</Text>
@@ -59,9 +59,9 @@ export function Profile({ navigation }) {
                     </View>
                 </View>
                 <View style={{ flex: 1, marginTop: 10, paddingTop: 20, }}>
-                    <TouchableOpacity onPress={() => navigation.navigate("MyJobs")} style={styles.ProfileBtn}>
-                        <MaterialCommunityIcons name='briefcase-variant' size={30} style={{ paddingRight: 10, color: Theme.colors.primary }} />
-                        <Text style={{ fontFamily: Theme.fonts.text500, fontSize: 16 }}>My Job</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("MyProducts")} style={styles.ProfileBtn}>
+                        <FontAwesome5 name="list-alt" size={30} style={{ paddingRight: 10, color: Theme.colors.primary }} />
+                        <Text style={{ fontFamily: Theme.fonts.text500, fontSize: 16 }}>My Products</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("AppliedJobs")} style={styles.ProfileBtn}>
                         <MaterialCommunityIcons name='briefcase-check' size={30} style={{ paddingRight: 10, color: Theme.colors.primary }} />

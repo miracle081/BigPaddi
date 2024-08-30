@@ -13,7 +13,7 @@ import { AppBotton } from '../Components/AppBotton';
 
 
 export function PostProduct({ navigation }) {
-    const { setUserInfo, setPreloader, userUID } = useContext(AppContext)
+    const { userInfo, setPreloader, userUID } = useContext(AppContext)
 
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
@@ -108,7 +108,7 @@ export function PostProduct({ navigation }) {
             location,
             description,
             price,
-            image: null,
+            image: "https://images.pexels.com/photos/20284614/pexels-photo-20284614/free-photo-of-balconies-on-residential-building-wall.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
             phone,
             userId: userUID,
             createdAt: Date.now()
@@ -206,9 +206,9 @@ export function PostProduct({ navigation }) {
                         placeholder="Phone number (digits only)*"
                         placeholderTextColor={category ? "#000" : "#7d7d7d"}
                         keyboardType="numeric"
-                        value={phone}
-                        onChangeText={setPhone}
-                        editable={!!category}
+                        value={userInfo.phone}
+                        // onChangeText={setPhone}
+                        editable={false}
                     />
 
                     {/* <TouchableOpacity style={{ backgroundColor: Theme.colors.primary, borderRadius: 5, padding: 15, alignItems: 'center', }} onPress={postAProduct}>
