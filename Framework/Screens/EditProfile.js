@@ -86,7 +86,7 @@ export function EditProfile({ navigation }) {
     async function uplaodToStorage() {
         try {
             let response = await fetch(image);
-            console.log(response);
+            // console.log(response);
             const imageBlob = await response.blob()
             await imgStorage().ref().child(`ProfileImages/${userUID}`).put(imageBlob);
         } catch {
