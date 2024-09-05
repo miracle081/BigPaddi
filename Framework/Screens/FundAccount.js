@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { formatMoney } from '../Components/FormatMoney'
 import { AppContext } from '../Components/GlobalVariables'
+import { ToastApp } from '../Components/Toast'
 
 
 const validationSchema = yup.object({
@@ -32,7 +33,8 @@ export function FundAccount({ navigation }) {
                     initialValues={{ amount: "" }}
                     onSubmit={(value) => {
                         closeModal();
-                        setAmount(Number(value.amount))
+                        setAmount(Number(value.amount));
+                        // ToastApp("You are trying to fund your account", "LONG")
                     }}
                     validationSchema={validationSchema}
                 >

@@ -9,6 +9,7 @@ import {
     StatusBar,
     StyleSheet,
     ScrollView,
+    TouchableOpacity,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import Carousel from "react-native-reanimated-carousel";
@@ -18,8 +19,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { AppContext } from "../Components/GlobalVariables";
 import { PostProduct } from "./PostProduct";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../Firebase/settings";
+import { formatMoney } from "../Components/FormatMoney";
 const { height, width } = Dimensions.get("window");
 
 
@@ -99,27 +101,36 @@ const images = [
     },
 ];
 
-export const Home = () => {
+export const Home = ({ navigation }) => {
     const { setUserInfo, setPreloader, userUID } = useContext(AppContext)
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [selected, setSelected] = useState(0);
 
     const getData = async () => {
-        try {
-            setLoading(true);
-            const res = await fetch("https://fakestoreapi.com/products");
-            if (res.ok) {
-                const data = await res.json();
-                setProducts(data);
-            } else {
-                console.error("Error fetching products. Status:", res.status);
-            }
-            setLoading(false);
-        } catch (error) {
-            console.error("Error fetching products", error);
-            setLoading(false);
-        }
+        onSnapshot(collection(db, 'products'), (snapshot) => {
+            const allData = []
+            snapshot.forEach(item => {
+                allData.push({ ...item.data(), docID: item.id })
+            })
+            setProducts(allData);
+            setPreloader(false)
+            // console.log(allData);
+        })
+        // try {
+        //     setLoading(true);
+        //     const res = await fetch("https://fakestoreapi.com/products");
+        //     if (res.ok) {
+        //         const data = await res.json();
+        //         setProducts(data);
+        //     } else {
+        //         console.error("Error fetching products. Status:", res.status);
+        //     }
+        //     setLoading(false);
+        // } catch (error) {
+        //     console.error("Error fetching products", error);
+        //     setLoading(false);
+        // }
     };
 
     function getUser() {
@@ -314,73 +325,7 @@ export const Home = () => {
                         />
                     </View>
                 </View>
-                <View style={{ marginBottom: 10 }}>
-                    <View
-                        style={{
-                            backgroundColor: "white",
-                            padding: 8,
-                            borderRadius: 30,
-                            paddingVertical: 20,
-                            minHeight: 400,
-                        }}
-                    >
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                paddingRight: 4,
-                                alignItems: "center",
-                            }}
-                        >
-                            <View>
-                                <Text style={{ fontSize: 17, fontWeight: 500 }}>
-                                    Newly Arrived
-                                </Text>
-                                <Text style={{ fontSize: 10 }}>
-                                    Take a look from a variety of brands and companies
-                                </Text>
-                            </View>
-                            <Pressable onPress={() => console.log("clicked seemore")}>
-                                <Text style={{ fontSize: 10, color: Theme.colors.primary }}>
-                                    SEE MORE
-                                </Text>
-                            </Pressable>
-                        </View>
-                        <View>
-                            <View style={styles.container}>
-                                {loading ? (
-                                    <Text> Loading...</Text>
-                                ) : products && products?.length > 0 ? (
-                                    products.map((item, index) => (
-                                        <View key={index}>
-                                            <Image
-                                                source={{ uri: item.image }}
-                                                style={{ width: 120, height: 120, borderRadius: 10 }}
-                                            />
-                                            <Text
-                                                numberOfLines={1}
-                                                ellipsizeMode="tail"
-                                                style={{ maxWidth: 150 }}
-                                            >
-                                                {item.title}
-                                            </Text>
-                                            <Text style={{ fontWeight: 600, fontSize: 16 }}>
-                                                {format(item.price * 30)}
-                                            </Text>
-                                            <Text
-                                                style={{ fontWeight: 400, fontSize: 12, color: "gray", textTransform: "capitalize" }}
-                                            >
-                                                {item.category}
-                                            </Text>
-                                        </View>
-                                    ))
-                                ) : (
-                                    <Text>Refresh</Text>
-                                )}
-                            </View>
-                        </View>
-                    </View>
-                </View>
+
                 <View
                     style={{
                         marginBottom: 10,
@@ -441,27 +386,29 @@ export const Home = () => {
                                     <Text> Loading...</Text>
                                 ) : products && products?.length > 0 ? (
                                     products.map((item, index) => (
-                                        <View key={index}>
+                                        <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.navigate("Details")} key={index}>
                                             <Image
                                                 source={{ uri: item.image }}
-                                                style={{ width: 120, height: 120, borderRadius: 10 }}
+                                                style={{ width: "100%", height: 150, borderRadius: 10 }}
                                             />
-                                            <Text
-                                                numberOfLines={1}
-                                                ellipsizeMode="tail"
-                                                style={{ maxWidth: 150 }}
-                                            >
-                                                {item.title}
-                                            </Text>
-                                            <Text style={{ fontWeight: 600, fontSize: 16 }}>
-                                                {format(item.price * 30)}
-                                            </Text>
-                                            <Text
-                                                style={{ fontWeight: 400, fontSize: 12, color: "gray", textTransform: "capitalize" }}
-                                            >
-                                                {item.category}
-                                            </Text>
-                                        </View>
+                                            <View style={{ padding: 5, flex: 1 }} >
+                                                <Text
+                                                    numberOfLines={1}
+                                                    ellipsizeMode="tail"
+                                                    style={{}}
+                                                >
+                                                    {item.title}
+                                                </Text>
+                                                <View>
+                                                    <Text style={{ fontWeight: 600, fontSize: 16 }}>{formatMoney(item.price)}</Text>
+                                                </View>
+                                                <Text
+                                                    style={{ fontWeight: 400, fontSize: 12, color: "gray", textTransform: "capitalize" }}
+                                                >
+                                                    {item.category}
+                                                </Text>
+                                            </View>
+                                        </TouchableOpacity>
                                     ))
                                 ) : (
                                     <Text>Refresh</Text>
@@ -481,9 +428,10 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         flexWrap: "wrap",
-        rowGap: 20,
+        gap: 20,
         justifyContent: "space-between",
         padding: 16,
+        flex: 1
     },
     item: {
         width: "49%",

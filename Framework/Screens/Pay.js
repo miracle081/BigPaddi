@@ -1,9 +1,8 @@
-import { View, Text, Alert, ToastAndroid } from "react-native";
+import { View, Text, Alert, } from "react-native";
 import { Paystack } from 'react-native-paystack-webview';
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import { useContext } from "react";
 import { Theme } from "../Components/Theme";
-import { PAYSTACK_PUBLIC_KEY } from "../Firebase/APIkeys.key";
 import { db } from "../Firebase/settings";
 import { AppContext } from "../Components/GlobalVariables";
 
@@ -13,7 +12,7 @@ export function Pay({ navigation, route }) {
     return (
         <View style={{ flex: 1 }}>
             <Paystack
-                paystackKey={PAYSTACK_PUBLIC_KEY}
+                paystackKey={"pk_test_92fcc0077ec7f42a73ff01c87db79c3698b06dec"}
                 amount={amount + ((1.8 / 100) * amount)}
                 billingEmail={userInfo.email}
                 activityIndicatorColor={Theme.colors.green}
@@ -21,15 +20,18 @@ export function Pay({ navigation, route }) {
                     navigation.goBack()
                 }}
                 onSuccess={() => {
+                    setPreloader(true);
                     updateDoc(doc(db, "users", userUID), {
-                        balance: amount + Number(userInfo.balance)
+                        wallet: amount + Number(userInfo.wallet)
                     }).then(() => {
+                        setPreloader(false);
                         Alert.alert(
                             "Payment successful",
                             `Payment of ${amount} was successful`,
-                            [{ text: "Ok", onPress: () => navigation.goBack() }]
+                            [{ text: "Ok", onPress: () => navigation.pop(2) }]
                         )
                     }).catch(() => {
+                        setPreloader(false);
                         Alert.alert(
                             "Payment Status",
                             `Something went wrong.`,

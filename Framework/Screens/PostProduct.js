@@ -18,6 +18,7 @@ export function PostProduct({ navigation }) {
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
     const [description, setDescription] = useState('');
+    const [imageURL, setImageURL] = useState('');
     const [location, setLocation] = useState('');
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
@@ -108,7 +109,7 @@ export function PostProduct({ navigation }) {
             location,
             description,
             price,
-            image: "https://images.pexels.com/photos/20284614/pexels-photo-20284614/free-photo-of-balconies-on-residential-building-wall.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
+            image: imageURL,
             phone,
             userId: userUID,
             createdAt: Date.now()
@@ -159,21 +160,17 @@ export function PostProduct({ navigation }) {
                         <Text style={{}}>{category || "Category*"}</Text>
                     </TouchableOpacity>
 
-
-                    <Text style={{ color: '#7d7d7d', fontSize: 16, marginBottom: 10, }}>Add at least 1 photo</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <View>{category && (
-                            <TouchableOpacity style={{ width: 100, height: 100, backgroundColor: '#323232', justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginRight: 10, }} >
-                                <Text style={{ color: Theme.colors.primary, fontSize: 30, }}> +</Text>
-                            </TouchableOpacity>
-                        )}
-                        </View>
-                    </View>
-
                     <Text style={{ color: '#7d7d7d', fontSize: 12, marginTop: 10, }}>
                         a clear picture of the item you want to sell
                     </Text>
 
+                    <TextInput
+                        style={[styles.selectInput, !category && { backgroundColor: '#f0f0f0', borderWidth: 1, borderColor: '#323232', borderRadius: 5, padding: 15, marginBottom: 15, fontSize: 16, }]}
+                        placeholder="Image URL*"
+                        placeholderTextColor={category ? "#000" : "#7d7d7d"}
+                        value={imageURL}
+                        onChangeText={setImageURL}
+                    />
                     <TextInput
                         style={[styles.selectInput, !category && { backgroundColor: '#f0f0f0', borderWidth: 1, borderColor: '#323232', borderRadius: 5, padding: 15, marginBottom: 15, fontSize: 16, }]}
                         placeholder="Description*"

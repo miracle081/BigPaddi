@@ -1,13 +1,14 @@
-import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../Components/GlobalVariables';
 import { formatMoney } from '../Components/FormatMoney';
 import { Theme } from '../Components/Theme';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faRotateBack } from '@fortawesome/free-solid-svg-icons';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { faRotateBack, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { collection, deleteDoc, doc, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../Firebase/settings';
+import { errorMessage } from '../Components/formatErrorMessage';
 
 export function MyProducts() {
     const { setUserInfo, setPreloader, userUID } = useContext(AppContext)
@@ -24,7 +25,27 @@ export function MyProducts() {
             setPreloader(false)
             // console.log(allData);
         })
-    }, [])
+    }, []);
+
+    function deleteProduct(id, name) {
+        setPreloader(true)
+        deleteDoc(doc(db, "products", id))
+            .then(() => {
+                setPreloader(false)
+                Alert.alert(
+                    "Delete Product!",
+                    `(${name}) has been deleted successfully`,
+                )
+            })
+            .catch(e => {
+                setPreloader(false)
+                Alert.alert(
+                    "Error!",
+                    errorMessage(e.code),
+                    [{ text: "Try Again" }]
+                )
+            })
+    }
 
 
     return (
@@ -70,9 +91,18 @@ export function MyProducts() {
                                         >
                                             {item.title}
                                         </Text>
-                                        <Text style={{ fontWeight: 600, fontSize: 16 }}>
-                                            {formatMoney(item.price)}
-                                        </Text>
+                                        <View>
+                                            <Text style={{ fontWeight: 600, fontSize: 16 }}>{formatMoney(item.price)}</Text>
+                                            <TouchableOpacity onPress={() => {
+                                                Alert.alert(
+                                                    "Delete Product!",
+                                                    `Are you sure you want to delete this product? (${item.title})`,
+                                                    [{ text: "No", style: "cancel" }, { text: "Yes!", onPress: () => { deleteProduct(item.docID, item.title) }, style: "destructive" }]
+                                                )
+                                            }}>
+                                                <FontAwesomeIcon icon={faTrash} color={Theme.colors.red} size={25} />
+                                            </TouchableOpacity>
+                                        </View>
                                         <Text
                                             style={{ fontWeight: 400, fontSize: 12, color: "gray", textTransform: "capitalize" }}
                                         >

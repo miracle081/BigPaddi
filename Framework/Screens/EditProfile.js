@@ -50,7 +50,7 @@ export function EditProfile({ navigation }) {
             aspect: [4, 4],
             quality: 1,
         })
-        console.log(result);
+        console.log(JSON.stringify(result, null, 2));
         if (!result.canceled) {
             const { uri } = result.assets[0];
             setImage(uri)
