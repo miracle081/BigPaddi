@@ -102,7 +102,7 @@ const images = [
 ];
 
 export const Home = ({ navigation }) => {
-    const { setUserInfo, setPreloader, userUID } = useContext(AppContext)
+    const { setUserInfo, userInfo, setPreloader, userUID, setDoc } = useContext(AppContext)
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [selected, setSelected] = useState(0);
@@ -116,21 +116,7 @@ export const Home = ({ navigation }) => {
             setProducts(allData);
             setPreloader(false)
             // console.log(allData);
-        })
-        // try {
-        //     setLoading(true);
-        //     const res = await fetch("https://fakestoreapi.com/products");
-        //     if (res.ok) {
-        //         const data = await res.json();
-        //         setProducts(data);
-        //     } else {
-        //         console.error("Error fetching products. Status:", res.status);
-        //     }
-        //     setLoading(false);
-        // } catch (error) {
-        //     console.error("Error fetching products", error);
-        //     setLoading(false);
-        // }
+        });
     };
 
     function getUser() {
@@ -192,25 +178,23 @@ export const Home = ({ navigation }) => {
                         </View>
                         <View style={{ flexDirection: "row", gap: 12, marginRight: 9 }}>
                             <Pressable
-                                onPress={() => console.log("navigate to cart")}
+                                onPress={() => navigation.navigate("Cart")}
                                 style={{ position: "relative" }}
                             >
-                                <Text
-                                    style={{
-                                        backgroundColor: "red",
-                                        width: 10,
-                                        height: 10,
-                                        top: -0,
-                                        zIndex: 10,
-                                        borderRadius: 50,
-                                        right: -3,
-                                        fontSize: 12,
-                                        position: "absolute",
-                                        lineHeight: 12,
-                                        padding: 3,
-                                        color: "white",
-                                    }}
-                                ></Text>
+                                <View style={{
+                                    width: 15,
+                                    height: 15,
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    backgroundColor: "red",
+                                    top: -8,
+                                    zIndex: 10,
+                                    borderRadius: 50,
+                                    right: -8,
+                                    position: "absolute",
+                                }}>
+                                    <Text style={{ fontSize: 12, color: "white", }}>{userInfo.cart.length}</Text>
+                                </View>
                                 <Ionicons name="cart-outline" size={24} color="black" />
                             </Pressable>
                             <Pressable
@@ -385,31 +369,33 @@ export const Home = ({ navigation }) => {
                                 {loading ? (
                                     <Text> Loading...</Text>
                                 ) : products && products?.length > 0 ? (
-                                    products.map((item, index) => (
-                                        <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.navigate("Details")} key={index}>
-                                            <Image
-                                                source={{ uri: item.image }}
-                                                style={{ width: "100%", height: 150, borderRadius: 10 }}
-                                            />
-                                            <View style={{ padding: 5, flex: 1 }} >
-                                                <Text
-                                                    numberOfLines={1}
-                                                    ellipsizeMode="tail"
-                                                    style={{}}
-                                                >
-                                                    {item.title}
-                                                </Text>
-                                                <View>
-                                                    <Text style={{ fontWeight: 600, fontSize: 16 }}>{formatMoney(item.price)}</Text>
+                                    products.map((item, index) => {
+                                        return (
+                                            <TouchableOpacity style={styles.item} onPress={() => { setDoc(item); navigation.navigate("Details") }} key={index}>
+                                                <Image
+                                                    source={{ uri: item.image }}
+                                                    style={{ width: "100%", height: 150, borderRadius: 10 }}
+                                                />
+                                                <View style={{ padding: 5, flex: 1 }} >
+                                                    <Text
+                                                        numberOfLines={1}
+                                                        ellipsizeMode="tail"
+                                                        style={{}}
+                                                    >
+                                                        {item.title}
+                                                    </Text>
+                                                    <View>
+                                                        <Text style={{ fontWeight: 600, fontSize: 16 }}>{formatMoney(item.price)}</Text>
+                                                    </View>
+                                                    <Text
+                                                        style={{ fontWeight: 400, fontSize: 12, color: "gray", textTransform: "capitalize" }}
+                                                    >
+                                                        {item.category}
+                                                    </Text>
                                                 </View>
-                                                <Text
-                                                    style={{ fontWeight: 400, fontSize: 12, color: "gray", textTransform: "capitalize" }}
-                                                >
-                                                    {item.category}
-                                                </Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    ))
+                                            </TouchableOpacity>
+                                        )
+                                    })
                                 ) : (
                                     <Text>Refresh</Text>
                                 )}
@@ -428,16 +414,17 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         flexWrap: "wrap",
-        gap: 20,
+        rowGap: 10,
         justifyContent: "space-between",
-        padding: 16,
-        flex: 1
+        padding: 15,
+        // flex: 1
     },
     item: {
         width: "49%",
-        marginVertical: 7,
-        padding: 16,
+        // marginVertical: 7,
+        // padding: 16,
         backgroundColor: "#f6f6f6",
+        borderRadius: 10
     },
 });
 

@@ -4,14 +4,14 @@ const AppContext = createContext();
 
 function AppProvider({ children }) {
     const [userUID, setUserUID] = useState('Iy4pnxqNcfXR2Z6yZdQ87xRAoQy1');
-    const [userInfo, setUserInfo] = useState({ image: null, });
+    const [userInfo, setUserInfo] = useState({ image: null, cart: [] });
     const [preloader, setPreloader] = useState(false);
-    const [docID, setDocID] = useState("");
+    const [doc, setDoc] = useState({});
 
 
     return (
         <AppContext.Provider value={{
-            docID, setDocID,
+            doc, setDoc,
             userInfo, setUserInfo,
             preloader, setPreloader,
             userUID, setUserUID
