@@ -24,7 +24,6 @@ export function Profile({ navigation }) {
         setPreloader(true)
         setTimeout(() => {
             setPreloader(false)
-            setUserInfo({ balance: 0 });
             setUserUID("")
             navigation.replace('Intro')
         }, 2000);
